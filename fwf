@@ -1,6 +1,6 @@
 -- Criação da Interface
 local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
+local MainFrame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local Admin1 = Instance.new("TextLabel")
 local Admin2 = Instance.new("TextLabel")
@@ -12,54 +12,54 @@ local admins = {701394241, 224670451} -- IDs dos administradores
 -- Configuração da Interface
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-Frame.Position = UDim2.new(0.5, -100, 0.5, -90)
-Frame.Size = UDim2.new(0, 250, 0, 220)
-Frame.Active = true
-Frame.Draggable = true -- Habilita o arrasto
-Frame.BorderSizePixel = 0
-Frame.BackgroundTransparency = 0.1
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 26) -- Cor escura para o fundo da Frame
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -130)
+MainFrame.Size = UDim2.new(0, 300, 0, 250)
+MainFrame.Active = true
+MainFrame.Draggable = true -- Habilita o arrasto
+MainFrame.BorderSizePixel = 0
+MainFrame.BackgroundTransparency = 0.15
 
 -- Título
-Title.Parent = Frame
-Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Fundo do título
 Title.Size = UDim2.new(1, 0, 0.2, 0)
-Title.Font = Enum.Font.SourceSansBold
+Title.Font = Enum.Font.GothamBold
 Title.Text = "Admins Próximos"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
-Title.TextStrokeTransparency = 0.5
+Title.TextStrokeTransparency = 0.3
 Title.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
 -- Admin 1
-Admin1.Parent = Frame
-Admin1.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Admin1.Parent = MainFrame
+Admin1.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
 Admin1.Position = UDim2.new(0, 10, 0.2, 5)
 Admin1.Size = UDim2.new(1, -20, 0.2, -5)
-Admin1.Font = Enum.Font.SourceSans
+Admin1.Font = Enum.Font.Gotham
 Admin1.TextColor3 = Color3.fromRGB(255, 255, 255)
 Admin1.TextScaled = true
 Admin1.TextStrokeTransparency = 0.5
 Admin1.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
 -- Admin 2
-Admin2.Parent = Frame
-Admin2.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Admin2.Parent = MainFrame
+Admin2.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
 Admin2.Position = UDim2.new(0, 10, 0.4, 5)
 Admin2.Size = UDim2.new(1, -20, 0.2, -5)
-Admin2.Font = Enum.Font.SourceSans
+Admin2.Font = Enum.Font.Gotham
 Admin2.TextColor3 = Color3.fromRGB(255, 255, 255)
 Admin2.TextScaled = true
 Admin2.TextStrokeTransparency = 0.5
 Admin2.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
 -- Botão de Alternar Arraste
-ToggleButton.Parent = Frame
-ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ToggleButton.Parent = MainFrame
+ToggleButton.BackgroundColor3 = Color3.fromRGB(66, 133, 244) -- Azul
 ToggleButton.Position = UDim2.new(0, 10, 0.6, 5)
 ToggleButton.Size = UDim2.new(1, -20, 0.15, -5)
-ToggleButton.Font = Enum.Font.SourceSansBold
+ToggleButton.Font = Enum.Font.GothamBold
 ToggleButton.Text = "Desativar Arraste"
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleButton.TextScaled = true
@@ -68,11 +68,11 @@ ToggleButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 ToggleButton.BorderSizePixel = 0
 
 -- Botão Deletar GUI
-DeleteButton.Parent = Frame
-DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+DeleteButton.Parent = MainFrame
+DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Vermelho
 DeleteButton.Position = UDim2.new(0, 10, 0.8, 5)
 DeleteButton.Size = UDim2.new(1, -20, 0.15, -5)
-DeleteButton.Font = Enum.Font.SourceSansBold
+DeleteButton.Font = Enum.Font.GothamBold
 DeleteButton.Text = "Deletar GUI"
 DeleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DeleteButton.TextScaled = true
@@ -86,11 +86,11 @@ local dragStart
 local startPos
 local dragEnabled = true -- Estado inicial do arraste habilitado
 
-Frame.InputBegan:Connect(function(input)
+MainFrame.InputBegan:Connect(function(input)
     if dragEnabled and input.UserInputType == Enum.UserInputType.MouseButton1 then
         isDragging = true
         dragStart = input.Position
-        startPos = Frame.Position
+        startPos = MainFrame.Position
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
                 isDragging = false
@@ -99,10 +99,10 @@ Frame.InputBegan:Connect(function(input)
     end
 end)
 
-Frame.InputChanged:Connect(function(input)
+MainFrame.InputChanged:Connect(function(input)
     if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
         local delta = input.Position - dragStart
-        Frame.Position = UDim2.new(
+        MainFrame.Position = UDim2.new(
             startPos.X.Scale,
             startPos.X.Offset + delta.X,
             startPos.Y.Scale,
@@ -116,10 +116,10 @@ ToggleButton.MouseButton1Click:Connect(function()
     dragEnabled = not dragEnabled
     if dragEnabled then
         ToggleButton.Text = "Desativar Arraste"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(66, 133, 244)
     else
         ToggleButton.Text = "Ativar Arraste"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 165, 0) -- Laranja
     end
 end)
 

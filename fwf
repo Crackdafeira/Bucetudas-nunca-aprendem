@@ -1,4 +1,4 @@
--- Criação da Interface
+-- Criando a interface do menu
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
@@ -9,22 +9,22 @@ local DeleteButton = Instance.new("TextButton")
 -- Configuração da Interface
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Frame Principal
+-- Frame Principal (Fundo)
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Fundo escuro
-MainFrame.BackgroundTransparency = 0.7
-MainFrame.Position = UDim2.new(0, 0, 0.5, -100) -- Posiciona a esquerda da tela
-MainFrame.Size = UDim2.new(0, 250, 0, 200)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)  -- Cor de fundo escura
+MainFrame.BackgroundTransparency = 0.8  -- Transparência para ver o fundo do jogo
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -150)  -- Centralizado
+MainFrame.Size = UDim2.new(0, 300, 0, 300)  -- Tamanho da interface
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
-MainFrame.Draggable = true -- Permite arrastar
+MainFrame.Draggable = true  -- Permitir arrastar a interface
 
--- Título
+-- Título da Interface
 Title.Parent = MainFrame
-Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Fundo do título
-Title.Size = UDim2.new(1, 0, 0.2, 0)
+Title.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Title.Size = UDim2.new(1, 0, 0.2, 0)  -- Título ocupa 20% da altura da interface
 Title.Font = Enum.Font.GothamBold
-Title.Text = "Menu GGzera"
+Title.Text = "Menu Tiki"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
 Title.TextStrokeTransparency = 0.5
@@ -33,14 +33,14 @@ Title.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 -- Container de Botões
 ButtonContainer.Parent = MainFrame
 ButtonContainer.BackgroundTransparency = 1
-ButtonContainer.Position = UDim2.new(0, 0, 0.2, 0)
+ButtonContainer.Position = UDim2.new(0, 0, 0.2, 0)  -- Posicionando abaixo do título
 ButtonContainer.Size = UDim2.new(1, 0, 0.8, 0)
 
--- Botão Toggle Arraste
+-- Botão "Ativar/Desativar Arraste"
 ToggleButton.Parent = ButtonContainer
-ToggleButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 ToggleButton.Size = UDim2.new(1, 0, 0.3, 0)
-ToggleButton.Font = Enum.Font.GothamBold
+ToggleButton.Font = Enum.Font.Gotham
 ToggleButton.Text = "Desativar Arraste"
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleButton.TextScaled = true
@@ -48,12 +48,12 @@ ToggleButton.TextStrokeTransparency = 0.6
 ToggleButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 ToggleButton.BorderSizePixel = 0
 
--- Botão Deletar GUI
+-- Botão "Deletar GUI"
 DeleteButton.Parent = ButtonContainer
 DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
 DeleteButton.Position = UDim2.new(0, 0, 0.35, 0)
 DeleteButton.Size = UDim2.new(1, 0, 0.3, 0)
-DeleteButton.Font = Enum.Font.GothamBold
+DeleteButton.Font = Enum.Font.Gotham
 DeleteButton.Text = "Deletar GUI"
 DeleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DeleteButton.TextScaled = true
@@ -61,11 +61,11 @@ DeleteButton.TextStrokeTransparency = 0.6
 DeleteButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 DeleteButton.BorderSizePixel = 0
 
--- Função de arraste
+-- Função de Arraste
 local isDragging = false
 local dragStart
 local startPos
-local dragEnabled = true -- Estado inicial do arraste habilitado
+local dragEnabled = true  -- Ativar arraste por padrão
 
 MainFrame.InputBegan:Connect(function(input)
     if dragEnabled and input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -92,15 +92,15 @@ MainFrame.InputChanged:Connect(function(input)
     end
 end)
 
--- Alternar o estado de arraste
+-- Alternar entre Ativar/Desativar o Arraste
 ToggleButton.MouseButton1Click:Connect(function()
     dragEnabled = not dragEnabled
     if dragEnabled then
         ToggleButton.Text = "Desativar Arraste"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
     else
         ToggleButton.Text = "Ativar Arraste"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Laranja mais claro
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- cor mais clara
     end
 end)
 
@@ -111,19 +111,19 @@ end)
 
 -- Efeitos de Hover para os botões
 ToggleButton.MouseEnter:Connect(function()
-    ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Efeito de hover
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)  -- Efeito de hover
 end)
 
 ToggleButton.MouseLeave:Connect(function()
     if dragEnabled then
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
     else
         ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     end
 end)
 
 DeleteButton.MouseEnter:Connect(function()
-    DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 70, 70) -- Efeito de hover
+    DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 70, 70)  -- Efeito de hover
 end)
 
 DeleteButton.MouseLeave:Connect(function()

@@ -16,6 +16,8 @@ Frame.Parent = ScreenGui
 Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Frame.Position = UDim2.new(0.5, -100, 0.5, -90)
 Frame.Size = UDim2.new(0, 200, 0, 180)
+Frame.Active = true
+Frame.Draggable = true -- Habilita o arrasto
 
 Title.Parent = Frame
 Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -50,10 +52,9 @@ ToggleButton.Text = "Desativar Arraste"
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleButton.TextScaled = true
 
--- Botão para Deletar a GUI (Dentro do Frame)
-DeleteButton.Parent = Frame -- Colocando o botão dentro do Frame agora
+DeleteButton.Parent = Frame
 DeleteButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
-DeleteButton.Position = UDim2.new(0, 0, 0.8, 0) -- Posição abaixo dos outros botões
+DeleteButton.Position = UDim2.new(0, 0, 0.8, 0)
 DeleteButton.Size = UDim2.new(1, 0, 0.1, 0)
 DeleteButton.Font = Enum.Font.SourceSansBold
 DeleteButton.Text = "Deletar GUI"

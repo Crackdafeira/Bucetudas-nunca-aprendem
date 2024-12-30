@@ -1,132 +1,102 @@
--- Criando a interface do menu
+-- Definir variáveis de admins e a distância máxima
+local admins = {701394241, 224670451} -- IDs dos administradores
+local maxDistance = 50  -- Distância máxima em que o jogador pode interagir com o admin (em studs)
+
+-- Interface da GUI
 local ScreenGui = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
+local Frame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
-local ButtonContainer = Instance.new("Frame")
-local ToggleButton = Instance.new("TextButton")
-local DeleteButton = Instance.new("TextButton")
+local Admin1 = Instance.new("TextLabel")
+local Admin2 = Instance.new("TextLabel")
+local Line1 = Instance.new("LineHandleAdornment")
+local Line2 = Instance.new("LineHandleAdornment")
 
--- Configuração da Interface
+-- Configuração do ScreenGui
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
+Frame.Size = UDim2.new(0, 200, 0, 100)
+Frame.Active = true
+Frame.Draggable = true
 
--- Frame Principal (Fundo)
-MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)  -- Cor de fundo escura
-MainFrame.BackgroundTransparency = 0.8  -- Transparência para ver o fundo do jogo
-MainFrame.Position = UDim2.new(0.5, -150, 0.5, -150)  -- Centralizado
-MainFrame.Size = UDim2.new(0, 300, 0, 300)  -- Tamanho da interface
-MainFrame.BorderSizePixel = 0
-MainFrame.Active = true
-MainFrame.Draggable = true  -- Permitir arrastar a interface
-
--- Título da Interface
-Title.Parent = MainFrame
-Title.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-Title.Size = UDim2.new(1, 0, 0.2, 0)  -- Título ocupa 20% da altura da interface
-Title.Font = Enum.Font.GothamBold
-Title.Text = "Menu Tiki"
+-- Configuração do título
+Title.Parent = Frame
+Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Title.Size = UDim2.new(1, 0, 0.3, 0)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "Admins Próximos"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
-Title.TextStrokeTransparency = 0.5
-Title.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
--- Container de Botões
-ButtonContainer.Parent = MainFrame
-ButtonContainer.BackgroundTransparency = 1
-ButtonContainer.Position = UDim2.new(0, 0, 0.2, 0)  -- Posicionando abaixo do título
-ButtonContainer.Size = UDim2.new(1, 0, 0.8, 0)
+-- Configuração dos administradores
+Admin1.Parent = Frame
+Admin1.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Admin1.Position = UDim2.new(0, 0, 0.3, 0)
+Admin1.Size = UDim2.new(1, 0, 0.35, 0)
+Admin1.Font = Enum.Font.SourceSans
+Admin1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Admin1.TextScaled = true
 
--- Botão "Ativar/Desativar Arraste"
-ToggleButton.Parent = ButtonContainer
-ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-ToggleButton.Size = UDim2.new(1, 0, 0.3, 0)
-ToggleButton.Font = Enum.Font.Gotham
-ToggleButton.Text = "Desativar Arraste"
-ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleButton.TextScaled = true
-ToggleButton.TextStrokeTransparency = 0.6
-ToggleButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-ToggleButton.BorderSizePixel = 0
+Admin2.Parent = Frame
+Admin2.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Admin2.Position = UDim2.new(0, 0, 0.65, 0)
+Admin2.Size = UDim2.new(1, 0, 0.35, 0)
+Admin2.Font = Enum.Font.SourceSans
+Admin2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Admin2.TextScaled = true
 
--- Botão "Deletar GUI"
-DeleteButton.Parent = ButtonContainer
-DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-DeleteButton.Position = UDim2.new(0, 0, 0.35, 0)
-DeleteButton.Size = UDim2.new(1, 0, 0.3, 0)
-DeleteButton.Font = Enum.Font.Gotham
-DeleteButton.Text = "Deletar GUI"
-DeleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-DeleteButton.TextScaled = true
-DeleteButton.TextStrokeTransparency = 0.6
-DeleteButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-DeleteButton.BorderSizePixel = 0
+-- Linhas para conectar o jogador aos admins
+Line1.Parent = game.Workspace
+Line1.Color3 = Color3.fromRGB(255, 0, 0)
+Line1.Thickness = 2
+Line1.Transparency = 0.5
 
--- Função de Arraste
-local isDragging = false
-local dragStart
-local startPos
-local dragEnabled = true  -- Ativar arraste por padrão
+Line2.Parent = game.Workspace
+Line2.Color3 = Color3.fromRGB(0, 255, 0)
+Line2.Thickness = 2
+Line2.Transparency = 0.5
 
-MainFrame.InputBegan:Connect(function(input)
-    if dragEnabled and input.UserInputType == Enum.UserInputType.MouseButton1 then
-        isDragging = true
-        dragStart = input.Position
-        startPos = MainFrame.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                isDragging = false
+-- Função para verificar a distância entre o jogador e o admin
+local function checkDistance(player)
+    local playerPos = player.Character:WaitForChild("HumanoidRootPart").Position
+    for i, adminId in ipairs(admins) do
+        local admin = game.Players:GetPlayerByUserId(adminId)
+        if admin and admin.Character then
+            local adminPos = admin.Character:WaitForChild("HumanoidRootPart").Position
+            local distance = (adminPos - playerPos).magnitude
+            if i == 1 then
+                Admin1.Text = admin.Name .. " [" .. math.floor(distance) .. "m]"
+                Line1.Adornee = player.Character:WaitForChild("HumanoidRootPart")
+                Line1.Attachment1 = Instance.new("Attachment", player.Character:WaitForChild("HumanoidRootPart"))
+                Line1.Attachment1.Position = Vector3.new(0, 0, 0)
+                Line1.Attachment0 = Instance.new("Attachment", admin.Character:WaitForChild("HumanoidRootPart"))
+                Line1.Attachment0.Position = Vector3.new(0, 0, 0)
+            elseif i == 2 then
+                Admin2.Text = admin.Name .. " [" .. math.floor(distance) .. "m]"
+                Line2.Adornee = player.Character:WaitForChild("HumanoidRootPart")
+                Line2.Attachment1 = Instance.new("Attachment", player.Character:WaitForChild("HumanoidRootPart"))
+                Line2.Attachment1.Position = Vector3.new(0, 0, 0)
+                Line2.Attachment0 = Instance.new("Attachment", admin.Character:WaitForChild("HumanoidRootPart"))
+                Line2.Attachment0.Position = Vector3.new(0, 0, 0)
             end
-        end)
+        else
+            if i == 1 then
+                Admin1.Text = "N/A"
+                Line1.Visible = false
+            elseif i == 2 then
+                Admin2.Text = "N/A"
+                Line2.Visible = false
+            end
+        end
     end
-end)
+end
 
-MainFrame.InputChanged:Connect(function(input)
-    if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - dragStart
-        MainFrame.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
+-- Atualizar as distâncias a cada 1 segundo
+while true do
+    wait(1)
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        checkDistance(player)  -- Atualiza as distâncias dos administradores
     end
-end)
-
--- Alternar entre Ativar/Desativar o Arraste
-ToggleButton.MouseButton1Click:Connect(function()
-    dragEnabled = not dragEnabled
-    if dragEnabled then
-        ToggleButton.Text = "Desativar Arraste"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    else
-        ToggleButton.Text = "Ativar Arraste"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- cor mais clara
-    end
-end)
-
--- Deletar a GUI
-DeleteButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
--- Efeitos de Hover para os botões
-ToggleButton.MouseEnter:Connect(function()
-    ToggleButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)  -- Efeito de hover
-end)
-
-ToggleButton.MouseLeave:Connect(function()
-    if dragEnabled then
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    else
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    end
-end)
-
-DeleteButton.MouseEnter:Connect(function()
-    DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 70, 70)  -- Efeito de hover
-end)
-
-DeleteButton.MouseLeave:Connect(function()
-    DeleteButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-end)
-
+end

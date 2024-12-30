@@ -3,8 +3,6 @@ local Frame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local Admin1 = Instance.new("TextLabel")
 local Admin2 = Instance.new("TextLabel")
-local Line1 = Instance.new("LineHandleAdornment")
-local Line2 = Instance.new("LineHandleAdornment")
 
 local admins = {701394241, 224670451} -- IDs dos administradores
 
@@ -15,8 +13,8 @@ Frame.Parent = ScreenGui
 Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
 Frame.Size = UDim2.new(0, 200, 0, 100)
-Frame.Active = true
-Frame.Draggable = true
+Frame.Active = true -- Permite eventos de entrada do mouse
+Frame.Draggable = true -- Permite arrastar a interface
 
 Title.Parent = Frame
 Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -42,21 +40,10 @@ Admin2.Font = Enum.Font.SourceSans
 Admin2.TextColor3 = Color3.fromRGB(255, 255, 255)
 Admin2.TextScaled = true
 
-Line1.Parent = game.Workspace
-Line1.Color3 = Color3.fromRGB(255, 0, 0)
-Line1.Thickness = 2
-Line1.Transparency = 0.5
-
-Line2.Parent = game.Workspace
-Line2.Color3 = Color3.fromRGB(0, 255, 0)
-Line2.Thickness = 2
-Line2.Transparency = 0.5
-
--- Função para atualizar distâncias
+-- Função para Atualizar Admins (apenas como referência, mantém-se igual)
 local function updateAdminDistances()
     local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local playerPos = character:WaitForChild("HumanoidRootPart").Position
+    local playerPos = player.Character:WaitForChild("HumanoidRootPart").Position
 
     for i, adminId in ipairs(admins) do
         local admin = game.Players:GetPlayerByUserId(adminId)
@@ -66,26 +53,18 @@ local function updateAdminDistances()
 
             if i == 1 then
                 Admin1.Text = admin.Name .. " [" .. math.floor(distance) .. "m]"
-                Line1.Adornee = character:WaitForChild("HumanoidRootPart")
-                Line1.CFrame = CFrame.new(adminPos, playerPos)
-                Line1.Visible = true
             elseif i == 2 then
                 Admin2.Text = admin.Name .. " [" .. math.floor(distance) .. "m]"
-                Line2.Adornee = character:WaitForChild("HumanoidRootPart")
-                Line2.CFrame = CFrame.new(adminPos, playerPos)
-                Line2.Visible = true
             end
         else
             if i == 1 then
                 Admin1.Text = "N/A"
-                Line1.Visible = false
             elseif i == 2 then
                 Admin2.Text = "N/A"
-                Line2.Visible = false
             end
         end
     end
 end
 
--- Atualização contínua
+-- Atualização Contínua
 game:GetService("RunService").RenderStepped:Connect(updateAdminDistances)

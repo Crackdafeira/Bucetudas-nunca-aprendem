@@ -14,8 +14,8 @@ ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 Frame.Parent = ScreenGui
 Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Frame.Position = UDim2.new(0.5, -100, 0.5, -70)
-Frame.Size = UDim2.new(0, 200, 0, 150)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -90)
+Frame.Size = UDim2.new(0, 200, 0, 180)
 
 Title.Parent = Frame
 Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -52,7 +52,7 @@ ToggleButton.TextScaled = true
 
 DeleteButton.Parent = Frame
 DeleteButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
-DeleteButton.Position = UDim2.new(0, 0, 0.7, 0)
+DeleteButton.Position = UDim2.new(0, 0, 0.7, 0) -- Ajuste para garantir espaço adequado
 DeleteButton.Size = UDim2.new(1, 0, 0.1, 0)
 DeleteButton.Font = Enum.Font.SourceSansBold
 DeleteButton.Text = "Deletar GUI"
